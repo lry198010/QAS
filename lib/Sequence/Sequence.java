@@ -90,6 +90,14 @@ public class Sequence {
   public double getGC(){
     
   }
+
+  public String toString(){
+    return toFastq();
+  }  
+
+  public String toFastq(){
+    return getName() + "\n" + getSeq() + "\n+\n" + getQual();
+  }
  
   private String name;
   private String seq;
