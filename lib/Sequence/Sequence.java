@@ -1,5 +1,5 @@
-package ReadSequence;
-import ReadSequence.Exception.*;
+package Sequence;
+import Sequence.Exception.*;
 import Stat.StatRecord;
 public class Sequence {
   public Sequence(String name, String seq, String qual, int phredOffset) throws BaseQualNumberNotEqualException, QuailOffsetNegativeException {
