@@ -4,7 +4,7 @@ public class StatRecord {
     recordType = type;
     forwardEnd = forwardClipEnd;
     forwardLength = forwardClipLength;
-    reverseBegin = reverseClipBegin
+    reverseBegin = reverseClipBegin;
     reverseLength = reverseClipLength;
   } 
   

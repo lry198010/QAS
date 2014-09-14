@@ -2,15 +2,17 @@ package Sequence;
 import Sequence.Exception.*;
 import Stat.StatRecord;
 public class Sequence {
-  public Sequence(String name, String seq, String qual, int phredOffset) throws BaseQualNumberNotEqualException, QuailOffsetNegativeException {
-    this.seq = seq.trim();
+  //public Sequence(String name, String seq, String qual, int phredOffset) throws BaseQualNumberNotEqualException, QuailOffsetNegativeException {
+  public Sequence(String name, String seq, String qual, int phredOffset) throws BaseQualNumberNotEqualException{
+    this.seq = seq.trim().toUpperCase();
     this.qual = qual.trim();
     if (this.seq.length() != this.qual.length()) {
-       throws new BaseQualNumberNotEqualException(name,this.seq,this.qual);
+       throw new BaseQualNumberNotEqualException(name,this.seq,this.qual);
     } 
     this.name = name;
     if(phredOffset < 0) {
-      throw new QuailOffsetNegativeException(phredOffset);
+      //throw new QuailOffsetNegativeException(phredOffset);
+      throw new BaseQualNumberNotEqualException(name,this.seq,this.qual);
     }
     this.phredOffset = phredOffset; // Sanger
     begin = 0;
@@ -18,17 +20,20 @@ public class Sequence {
     seqType = 0;
   }  
   
-  public Sequence(String name, String seq, String qual) throws BaseQualNumberNotEqualException, QuailOffsetNegativeException {
+  //public Sequence(String name, String seq, String qual) throws BaseQualNumberNotEqualException, QuailOffsetNegativeException {
+  public Sequence(String name, String seq, String qual) throws BaseQualNumberNotEqualException {
     this(name,seq,qual,33);  
   }
 
   // for fasta format
-  public Sequence(String name, String seq) throws BaseQualNumberNotEqualException, QuailOffsetNegativeException { // for Fast
+  //public Sequence(String name, String seq) throws BaseQualNumberNotEqualException, QuailOffsetNegativeException { // for Fast
+  public Sequence(String name, String seq) throws BaseQualNumberNotEqualException { //, QuailOffsetNegativeException { // for Fast
     this(name,seq,seq.replaceAll(".","I"),33);
     seqType = 1;
   }
 
-  public Sequence(Sequence seqRecord, int forwardClipEnd, int reverseClipBegin) throws BaseQualNumberNotEqualException, QuailOffsetNegativeException {
+  //public Sequence(Sequence seqRecord, int forwardClipEnd, int reverseClipBegin) throws BaseQualNumberNotEqualException, QuailOffsetNegativeException {
+  public Sequence(Sequence seqRecord, int forwardClipEnd, int reverseClipBegin) throws BaseQualNumberNotEqualException { //, QuailOffsetNegativeException {
     this(seqRecord.getName(), seqRecord.getSeq(), seqRecord.getQual(),seqRecord.getPhredOffset());
     records[recordIndex++] = new StatRecord("ByInitial",forwardClipEnd,forwardClipEnd,reverseClipBegin,seqRecord.getSeq().length() - reverseClipBegin + 1);
   }
@@ -53,12 +58,12 @@ public class Sequence {
   
   public String getSeq(){
     if (isEmpty()) return null;
-    return seq.subString(begin,end);
+    return seq.substring(begin,end);
   }
   
   public String getQual(){
     if (isEmpty()) return null;
-    return qual.subString(begin,end);
+    return qual.substring(begin,end);
   }  
 
   public int[] getQualNumber(){
@@ -88,7 +93,7 @@ public class Sequence {
   }  
   
   public double getGC(){
-    
+    return 15.6; 
   }
 
   public String toString(){

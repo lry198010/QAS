@@ -1,13 +1,14 @@
 package Sequence.ReadSeq; 
 import java.nio.file.*;
 import java.nio.charset.Charset;
-import java.io.IOExeption;
+import java.io.IOException;
+import java.io.BufferedReader;
 import Sequence.Sequence; 
 import Sequence.Exception.*;
 public class FastqRead {
   public FastqRead(String file){
     try{
-      fr = Files.newBufferReader(Paths.get(file), Charset.forName("UTF-8"));
+      fr = Files.newBufferedReader(Paths.get(file), Charset.forName("UTF-8"));
       this.file = file;
     }catch(IOException e){
       e.printStackTrace();
@@ -15,21 +16,22 @@ public class FastqRead {
     }
   }
   
-  public FastqRead(String file,phredOff){
+  public FastqRead(String file, int phredOff){
     this(file);
     this.phredOff = phredOff;
   }
   
-  public Sequence getAsequence() throws IncorrectSequenceFormatException{
+  public Sequence getASequence() throws IncorrectSequenceFormatException,IOException, BaseQualNumberNotEqualException{
     String[] seq = new String[4];
     int index = 0; 
-    while(String txt = fr.readLine() != null){
+    String txt = null;
+    while( (txt = fr.readLine()) != null){
       inLine++;
       txt.trim();
       if(txt.length() > 0){
         seq[index++] = txt;
       } 
-      if(index >= 3) break;
+      if(index >= 4) break;
     }
     if(index < 4) throw new IncorrectSequenceFormatException(file + ": The number of lines is not the integer times of 4!");
     if(seq[0].charAt(0) != '@') throw new IncorrectSequenceFormatException(file + ": in line " + (inLine - 3) + " the first character of sequence name is not '@'");
@@ -40,7 +42,7 @@ public class FastqRead {
 
   }
 
-  private BufferReader fr = null;
+  private BufferedReader fr = null;
   private boolean isOnEnd = false;
   private String file = "";
   private long inLine = -1;
