@@ -1,8 +1,10 @@
+package Screen;
+
 import Sequence.Sequence;
-import java.lang.Math.max;
+import static java.lang.Math.max;
 public abstract class Assessment implements Screener {
-  public final static MAXSEQLEN = 1024;
-  public int screen(Sequence seq);
+  public final static int MAXSEQLEN = 1024;
+  public abstract int screen(Sequence seq);
   public long getBasesScreened(){
     return basesScreened; 
   }

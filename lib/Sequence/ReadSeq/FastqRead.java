@@ -1,4 +1,5 @@
 package Sequence.ReadSeq; 
+
 import java.nio.file.*;
 import java.nio.charset.Charset;
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class FastqRead {
   }
   
   public Sequence getASequence() throws IncorrectSequenceFormatException,IOException, BaseQualNumberNotEqualException{
+    if(isOnEnd) return null;
     String[] seq = new String[4];
     int index = 0; 
     String txt = null;
@@ -33,6 +35,10 @@ public class FastqRead {
       } 
       if(index >= 4) break;
     }
+    if(index == 0 && txt == null){
+      isOnEnd = true; 
+      return null;
+    }
     if(index < 4) throw new IncorrectSequenceFormatException(file + ": The number of lines is not the integer times of 4!");
     if(seq[0].charAt(0) != '@') throw new IncorrectSequenceFormatException(file + ": in line " + (inLine - 3) + " the first character of sequence name is not '@'");
     if(seq[2].charAt(0) != '+') throw new IncorrectSequenceFormatException(file + ": in line " + (inLine - 2) + " the first character of sequence name is not '+'");
@@ -40,6 +46,10 @@ public class FastqRead {
     
     return new Sequence(seq[0],seq[1],seq[3],phredOff); 
 
+  }
+  
+  public boolean hasNext(){
+    return !isOnEnd; 
   }
 
   private BufferedReader fr = null;

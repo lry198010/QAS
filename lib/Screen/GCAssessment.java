@@ -1,7 +1,9 @@
+package Screen;
+
 import Sequence.Sequence;
 import Sequence.Exception.*;
 public class GCAssessment extends Assessment {
-  public GCAssessment(int seqMaxLen, int phredOffSet) throws Exception{
+  public GCAssessment(int seqMaxLen, int phredOffset) throws Exception{
     if(seqMaxLen <= 0){
       throw new Exception("Error: seqMaxLen = " + seqMaxLen + ", Max sequence length should > 0!");
     }
@@ -36,15 +38,17 @@ public class GCAssessment extends Assessment {
     atcgn = new long[MAXSEQLEN][5]; 
     qualCharBegin = 33;
     qualCharEnd = 126; 
-    qc = new long[seqMaxLen][qualCharEnd - qualCharBegin + 1];
+    qc = new long[MAXSEQLEN][qualCharEnd - qualCharBegin + 1];
   }
   
   public int screen(Sequence seq){
+    if(seq == null) return 0;
+
     String seqStr = seq.getSeq(); 
     String qualStr = seq.getQual();
     c2SeqMaxLen(seqStr.length());
     char[] seqC = seqStr.toCharArray();
-    for(int i=0; i < seqb.length; i++){
+    for(int i=0; i < seqC.length; i++){
       switch(seqC[i]){
         case 'A':
           atcgn[i][0]++;
@@ -69,6 +73,7 @@ public class GCAssessment extends Assessment {
       qc[i][qualC[i] - qualCharBegin]++;
     }
     
+    return 1; 
   }
   
   public long[][] getGC(){
