@@ -2,20 +2,20 @@ package Screen;
 
 import Sequence.Sequence;
 import Sequence.Exception.*;
-public class GCAssessment extends Assessment {
-  public GCAssessment(int seqMaxLen) throws Exception{
+public class LenAssessment extends Assessment {
+  public LenAssessment(int seqMaxLen) throws Exception{
     if(seqMaxLen <= 0){
       throw new Exception("Error: seqMaxLen = " + seqMaxLen + ", Max sequence length should > 0!");
     }
     //this.seqMaxLen = seqMaxLen;
-    assessments = new long[seqMaxLen][5]; 
-    type = "GC";
+    assessments = new long[seqMaxLen][1]; 
+    type = "Len";
   }
   
-  public GCAssessment() throws Exception{
+  public LenAssessment() throws Exception{
     //seqMaxLen = 0;
-    assessments = new long[MAXSEQLEN][5]; 
-    type = "GC";
+    assessments = new long[MAXSEQLEN][1]; 
+    type = "Len";
   }
   
   public int screen(Sequence seq){
@@ -23,31 +23,12 @@ public class GCAssessment extends Assessment {
 
     String seqStr = seq.getSeq(); 
     c2SeqMaxLen(seqStr.length());
-    char[] seqC = seqStr.toCharArray();
-    for(int i=0; i < seqC.length; i++){
-      switch(seqC[i]){
-        case 'A':
-          assessments[i][0]++;
-          break;
-        case 'C':
-          assessments[i][1]++;
-          break;
-        case 'G':
-          assessments[i][2]++;
-          break;
-        case 'T':
-          assessments[i][3]++;
-          break;
-        default:
-          assessments[i][4]++;
-          break;
-      } 
-    }
+    assessments[seqStr.length()-1][0]++;
     addScreens(seq); 
     return 1; 
   }
   
-  public long[][] getGC(){
+  public long[][] getLen(){
     return getAssessments();
   }
   

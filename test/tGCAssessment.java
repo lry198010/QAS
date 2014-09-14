@@ -7,17 +7,29 @@ public class tGCAssessment {
     String file = "tes1.fq";
     FastqRead fqr = new FastqRead(file,33);
     try{
-      Screener sc = new GCAssessment();
+      Screener[] screeners = { new GCAssessment(), 
+                               new QualAssessment(),
+                               new AveQualAssessment(),
+                               new LenAssessment()
+                             };
       while(fqr.hasNext()){
-        sc.screen(fqr.getASequence()); 
+        Sequence seq = fqr.getASequence();
+        for(Screener sc : screeners){
+          sc.screen(seq);
+        } 
       }
-      for(long[] t : ((GCAssessment)sc).getGC()){
-        long total = 0;
-        for(long g : t) {
-          System.out.print(g +" ");
-          total += g;
+      for(Screener sc : screeners){
+        System.out.println("Screen Type: " + sc.getScreenType());
+        System.out.println("Total reads screened: " + sc.getReadsScreened());
+        System.out.println("Total bases screened: " + sc.getBasesScreened());
+        for(long[] t : ((Assessment)sc).getAssessments()){
+          long total = 0;
+          for(long g : t) {
+            System.out.print(g +" ");
+            total += g;
+          }
+          System.out.println(total);
         }
-        System.out.println(total);
       }
     }catch(Exception e){
       e.printStackTrace();
