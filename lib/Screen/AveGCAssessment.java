@@ -8,7 +8,7 @@ public class AveGCAssessment extends Assessment {
   public AveGCAssessment() throws Exception{
     //seqMaxLen = 0;
     seqMaxLen = 100;
-    assessments = new long[100][5]; 
+    assessments = new long[100][6]; 
     type = "AveGC";
   }
   
@@ -39,9 +39,10 @@ public class AveGCAssessment extends Assessment {
     }
     for(int i = 0; i < numOfBases.length; i++){
       int percenter = (int)(seqMaxLen * numOfBases[i]/seqStr.length());
-      System.err.println("numofBases:" + numOfBases[i] + "\tseqlen:" + seqStr.length() + "\tpercent:" + percenter);
       assessments[percenter][i]++;
     }
+    int percenter = (int)((numOfBases[1] + numOfBases[2]) * seqMaxLen/seqStr.length());
+    assessments[percenter][5]++;
     addScreens(seq); 
     return 1; 
   }
