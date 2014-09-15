@@ -8,6 +8,7 @@ public class tGCAssessment {
     FastqRead fqr = new FastqRead(file,33);
     try{
       Screener[] screeners = { new GCAssessment(), 
+                               new AveGCAssessment(),
                                new QualAssessment(),
                                new AveQualAssessment(),
                                new LenAssessment()
